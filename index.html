@@ -13,15 +13,16 @@
 
             var image = new Image();
             image.src = 'shachiku.png';
-            var yoko = 270;
+            var yoko = 50;
             var tate = 220;
             var move = 0;
             var enemyImage = new Image();
             enemyImage.src = 'enemy.png';
-            var enemyYoko = 0;
+            var enemyYoko = 640;
             var enemyTate = 330;
-            var enemyMove = 5;
+            var enemyMove = -5;
             var gameover = 0;
+            var score = 0;
 
             function checkHit() {
                 var sx1 = yoko;
@@ -38,14 +39,8 @@
             }
 
             function fireEnemy() {
-                var rand = Math.floor(Math.random() * 2);
-                if (rand == 1) {
-                    enemyYoko = -43;
-                    enemyMove = 5;
-                } else {
-                    enemyYoko = 640;
-                    enemyMove = -5;
-                }
+                enemyYoko = 640;
+                enemyMove = -5;
             }
 
             function moveShachiku() {
@@ -62,9 +57,11 @@
             function start() {
                 var canvas = document.getElementById('canvas');
                 context = canvas.getContext('2d');
-                canvas.addEventListener('click', function(e) {
-                    if(move == 0) {
-                        move = -4;
+                document.addEventListener('keydown', function(e) {
+                    if(e.keyCode == 32) { //space key
+                        if(move == 0) {
+                            move = -4;
+                        }
                     }
                 });
                 loop();
@@ -82,6 +79,7 @@
                 context.clearRect(0, 0, 640, 360);
                 context.drawImage(image, yoko, tate);
                 context.drawImage(enemyImage, enemyYoko, enemyTate);
+                context.fillText('スコア：　' + ('00000' + Math.ceil(score++ / 10)).slice(-5), 500, 100);
                 checkHit();
                 if(gameover == 1) {
                     context.fillText('ゲームオーバー！', 50 ,100);
